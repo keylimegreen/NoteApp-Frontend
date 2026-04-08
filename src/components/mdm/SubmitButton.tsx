@@ -1,7 +1,7 @@
 import React from "react";
 import { Share2 } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
-import useNoteStore from "../store/useNoteStore";
+import useNoteStore from "../../store/useNoteStore";
 
 const SubmitButton: React.FC = () => {
   const { ageGroup, gender, presentationType, oneLiner } = useNoteStore(
@@ -21,7 +21,7 @@ const SubmitButton: React.FC = () => {
     <div className="flex justify-center pt-6 pb-12">
       <button
         onClick={submitToBackend}
-        className="flex items-center space-x-2 bg-slate-900 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-800 transform active:scale-95 transition shadow-xl"
+        className="default-button"
       >
         <Share2 size={20} />
         <span>Process Note</span>
