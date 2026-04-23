@@ -1,3 +1,5 @@
+import { PROCEDURES } from "../assets/procedures";
+
 export const WORKUP = ['Labs', 'EKG', 'Xray', 'US', 'POCUS','CT', 'MRI', 'Procedures','Consults'] as const;
 export type Workup = typeof WORKUP[number];
 
@@ -51,11 +53,7 @@ export const ALL_US_EXAMS = [
 
 export type Us_exam = typeof ALL_US_EXAMS[number];
 
-export const ALL_PROCEDURES = [
-  "I&D","Laceration repair","Thoracentesis","Paracentesis","Pericardiocentesis","Needle Thoracostomy",
-  "Open Thoracostomy","Reduction","Splinting","Procedural sedation",
-  "LP","PIV US","CVC","A-Line","TC Pacer","TV Pacer","ACLS"
-] as const;
+export const ALL_PROCEDURES = [...Object.keys(PROCEDURES)] as const;
 
 export type Procedure = typeof ALL_PROCEDURES[number];
 

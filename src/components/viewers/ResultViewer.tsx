@@ -1,10 +1,13 @@
 import NavButton from "../mdm/NavButton"
+import PatientTabs from "../mdm/PatientTabs"
+import Results from "../results/Results"
 
 
 const ViewResult:React.FC = () => {
     return (
         <div>
-            <NavButton targetView="mdm" label="Return to template"/>
+            <Results/>
+            <PatientTabs/><NavButton targetView="MDM" label="Return to template"/>
         </div>
     )
 }

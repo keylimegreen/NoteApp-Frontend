@@ -1,5 +1,5 @@
 import { DIAGNOSIS_LIST } from "../../assets/diagnosisList";
-import useNoteStore, { useActivePatientData } from "../../store/useNoteStore";
+import useDischargeStore from "../../store/useDischargeStore";
 import Fuse from "fuse.js";
 import React, { useState, useMemo } from "react";
 
@@ -16,9 +16,8 @@ const DiagnosisTag = ({ label, onRemove }: { label: string; onRemove: () => void
   </span>
 );
 
-const DiagnosisSearch = () => {
-  const { addDiagnosis, removeDiagnosis, clearDiagnoses } = useNoteStore();
-  const diagnosisList = useActivePatientData((p)=> p.diagnosisList)
+const DischargeSearch = () => {
+  const { addDischargeSearch, removeDischargeSearch, clearDischargeSearch, dischargeSearchList } = useDischargeStore();
   const [query, setQuery] = useState(''); // Initialize with store value
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,14 +33,14 @@ const DiagnosisSearch = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // If the user presses Backspace and the input is empty, delete the last diagnosis
-    if (e.key === 'Backspace' && query === '' && diagnosisList.length > 0) {
-      const lastItem = diagnosisList[diagnosisList.length - 1];
-      removeDiagnosis(lastItem);
+    if (e.key === 'Backspace' && query === '' && dischargeSearchList.length > 0) {
+      const lastItem = dischargeSearchList[dischargeSearchList.length - 1];
+      removeDischargeSearch(lastItem);
     }
     
     // Quick select first suggestion on Enter
     if (e.key === 'Enter' && suggestions.length > 0) {
-      addDiagnosis(suggestions[0]);
+      addDischargeSearch(suggestions[0]);
       setQuery('');
       setIsOpen(false);
     }
@@ -53,11 +52,11 @@ const DiagnosisSearch = () => {
       <div className="flex flex-wrap gap-2 items-center">
         
         {/* Render the "Little Boxes" */}
-        {diagnosisList.map((d) => (
+        {dischargeSearchList.map((d) => (
           <DiagnosisTag 
             key={d} 
             label={d} 
-            onRemove={() => removeDiagnosis(d)} 
+            onRemove={() => removeDischargeSearch(d)} 
           />
         ))}
 
@@ -68,11 +67,11 @@ const DiagnosisSearch = () => {
           onKeyDown={handleKeyDown}
           onChange={(e) => { setQuery(e.target.value); setIsOpen(true); }}
           onFocus={() => setIsOpen(true)}
-          placeholder={diagnosisList.length === 0 ? "Add primary diagnosis..." : "Add secondary..."}
+          placeholder={dischargeSearchList.length === 0 ? "Add primary diagnosis..." : "Add secondary..."}
           className="flex-1 min-w-[150px] bg-transparent text-white outline-none placeholder:text-slate-600 py-1"
         />
         <button 
-              onClick={() => clearDiagnoses()}
+              onClick={() => clearDischargeSearch()}
               className="hover:text-red-400 transition-colors"
             >
               ✕
@@ -85,7 +84,7 @@ const DiagnosisSearch = () => {
           {suggestions.map((item) => (
             <li
               key={item}
-              onClick={() => { addDiagnosis(item); setQuery(''); setIsOpen(false); }}
+              onClick={() => { addDischargeSearch(item); setQuery(''); setIsOpen(false); }}
               className="p-3 hover:bg-blue-600/20 hover:text-blue-400 text-slate-300 cursor-pointer text-sm border-b border-slate-800 last:border-none transition-colors"
             >
               {item}
@@ -97,4 +96,4 @@ const DiagnosisSearch = () => {
   );
 };
 
-export default DiagnosisSearch;
+export default DischargeSearch;

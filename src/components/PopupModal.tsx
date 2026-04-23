@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import useNoteStore from "../store/useNoteStore";
+import useNoteStore, { useActivePatientData } from "../store/useNoteStore";
 import useUIStore from "../store/useUIStore";
 import type {
   AllWorkupValues,
@@ -30,6 +30,8 @@ const PopupModal = () => {
     customConsult,
     customProcedure,
   } = useNoteStore();
+
+  const activeWorkup = useActivePatientData((p) => p.workup)
   if (!activeCheckbox) return null;
   const options =
     WORKUP_OPTIONS[activeCheckbox as keyof typeof WORKUP_OPTIONS] || [];
@@ -56,7 +58,8 @@ const PopupModal = () => {
 
         <div className="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto pr-2 mb-4">
           {options.map((item) => {
-            const currentSelected = workup[activeCheckbox];
+            
+            const currentSelected = activeWorkup[activeCheckbox];
             if (Array.isArray(currentSelected)) {
               const isActive = currentSelected.includes(item);
               return (

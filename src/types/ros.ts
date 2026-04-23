@@ -20,8 +20,6 @@ export const ROS_GI = [
   "Nausea/Vomiting",
   "Diarrhea",
   "Constipation",
-  "Melena",
-  "Hematemesis",
 ] as const;
 
 export type ROS_gi = (typeof ROS_GI)[number];
@@ -31,8 +29,8 @@ export const ROS_NEURO = [
   "Dizziness",
   "Weakness",
   "Numbness",
-  "Altered mental status",
   "Unsteadiness",
+  "Confusion",
 ] as const;
 
 export type ROS_neuro = (typeof ROS_NEURO)[number];
@@ -41,14 +39,12 @@ export const ROS_GU = [
   "Dysuria",
   "Hematuria",
   "Urinary retention",
-  "Incontinence",
-  "Vaginal bleeding",
-  "vaginal discharge",
+  "Incontinence","Flank pain",
 ] as const;
 
 export type ROS_gu = (typeof ROS_GU)[number];
 
-export const ROS_MSK = ["Joint pain", "Back pain", "Extremity pain"] as const;
+export const ROS_MSK = ["Neck pain","Back pain", "Joint pain", "Extremity pain"] as const;
 
 export type ROS_msk = (typeof ROS_MSK)[number];
 
@@ -70,3 +66,5 @@ export type AllRosItems =
   | ROS_neuro
   | ROS_gu
   | ROS_msk;
+
+export type RosCategory = keyof typeof ROS_OPTIONS;

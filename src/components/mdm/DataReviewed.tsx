@@ -1,17 +1,18 @@
 import cn from "../../lib/utils";
 import GroupComponents from "../general/Group";
 
-const AgeComponent: React.FC = () => {
+const DataReviewedComponent: React.FC = () => {
   return (
     <div className="flex p-1">
       <h3 className={cn("text-header", "header-border-r", "header-vertical")}>
-        Age
+        Data 
+        Review
       </h3>
-      <div className="grid grid-cols-6 gap-2 pl-2">
-        <GroupComponents collectionName={"age"} />
+      <div className="grid grid-cols-4 gap-2 pl-2">
+        <GroupComponents collectionName={"dataReviewed"} />
       </div>
     </div>
   );
 };
 
-export default AgeComponent;
+export default DataReviewedComponent;

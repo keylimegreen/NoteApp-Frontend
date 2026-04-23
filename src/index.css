@@ -1,10 +1,34 @@
 @import "tailwindcss";
 
 @layer components {
-  .ros-btn {
-    @apply flex-1 py-1 text-[10px] font-bold transition-all border-r border-slate-700 last:border-r-0;
+  .ros-badge {
+    @apply inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium 
+           border transition-all cursor-pointer select-none m-0.5;
   }
-  .ros-btn-neg { @apply hover:bg-green-600/20 data-[state=active]:bg-green-600 data-[state=active]:text-white; }
-  .ros-btn-null { @apply hover:bg-slate-700 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-300; }
-  .ros-btn-pos { @apply hover:bg-red-600/20 data-[state=active]:bg-red-600 data-[state=active]:text-white; }
+  
+  .ros-badge-null { @apply bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-600; }
+  .ros-badge-neg  { @apply bg-green-500/10 border-green-500/50 text-green-400; }
+  .ros-badge-pos  { @apply bg-red-500/10 border-red-500/50 text-red-400 font-bold; }
+
+
+  .badge {
+    @apply inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium 
+           border transition-all cursor-pointer select-none m-0.5;
+  }
+  .badge-null { @apply bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-600; }
+  .badge-pos  { @apply bg-red-500/10 border-red-500/50 text-red-400 font-bold; }
+
+  .text-header {@apply font-bold text-slate-300}
+  .text-basic {@apply text-slate-500}
+
+  .header-vertical {@apply [writing-mode:vertical-lr] rotate-180}
+  .header-border-b {@apply border-b border-slate-500 pb-1}
+  .header-border-r {@apply border-l border-slate-500 pl-2}
+
+  .radio-default {@apply flex text-sm cursor-pointer hover:text-blue-600}
+
+  .baseStyles {@apply px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-md}
+  .primaryBtn  {@apply bg-blue-600 text-white hover:bg-blue-500 shadow-blue-900/20}
+  .secondaryBtn {@apply bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700}
+
 }

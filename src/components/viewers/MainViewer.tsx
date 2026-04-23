@@ -9,21 +9,21 @@ import LoginViewer from "./LoginViewer";
 import useUIStore from "../../store/useUIStore";
 
 const MainViewer: React.FC = () => {
-  const activeView = useUIStore((state) => state.activeView);
+  const {activeView} = useUIStore();
   switch (activeView) {
-    case "login":
+    case "Login":
       return <LoginViewer />;
-    case "result":
+    case "Result":
       return <ResultViewer />;
-    case "mdm":
+    case "MDM":
       return <MdmViewer />;
-    case "calculator":
+    case "Calculator":
       return <CalculatorViewer />;
-    case "procedure":
+    case "Procedure":
       return <ProcedureViewer />;
-    case "transfer":
+    case "Transfer":
       return <TransferViewer />;
-    case "discharge":
+    case "Discharge":
       return <DischargeViewer />;
     default:
       return <LoginViewer />; // Fallback if something goes wrong
