@@ -1,38 +1,37 @@
 import { create } from "zustand";
-import type { NavigationHeaders, View } from "../types/mdm";
+import type { NavigationHeaders } from "../types/mdm";
 import type { WorkupListCategory } from "../types/workup";
+
+type alertType = "alert" | "error" | null
 
 interface UIState {
   // Data Fields
   activeTab: NavigationHeaders;
-  activeView: View;
   activeCheckbox: WorkupListCategory | null;
-  error: string;
+  alertMsg: string| null;
+  type: alertType;
 
   // Actions (Functions to update the data)
   setActiveTab: (activeTab: NavigationHeaders) => void;
-  setActiveView: (activeView: View) => void;
   setActiveCheckbox: (activeCheckbox: WorkupListCategory | null) => void;
-  setError: (error: string) => void;
+  setAlert: (alertMsg: string|null, type: alertType) => void;
 }
 
 const initialUIState = {
   activeTab: "MDM" as NavigationHeaders,
-  activeView: "MDM" as View,
   activeCheckbox: null,
-  //user
 
-  error: "",
+  alertMsg: null,
+  type: null
 };
 
 export const useUIStore = create<UIState>((set) => ({
   ...initialUIState,
   setActiveTab: (activeTab: NavigationHeaders) => set({ activeTab }),
-  setActiveView: (activeView: View) => set({ activeView }),
   setActiveCheckbox: (activeCheckbox: WorkupListCategory | null) =>
     set({ activeCheckbox }),
  
-  setError: (error: string) => set({ error }),
+  setAlert: (alertMsg: string|null,type:alertType) => set({ alertMsg, type }),
 }));
 
 export default useUIStore;

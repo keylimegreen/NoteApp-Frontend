@@ -1,0 +1,37 @@
+import cn from "../../lib/utils";
+import useNoteStore from "../../store/useNoteStore";
+import useUIStore from "../../store/useUIStore";
+
+const ResultsDep = () => {
+  const activePatient = useNoteStore((s) => s.returnActivePatient());
+  const response = null; //activePatient.response;
+  const time = activePatient.responseTime
+  const setAlert = useUIStore((s)=> s.setAlert)
+
+  const copyToClipboard = () => {
+      navigator.clipboard.writeText(response ?? "");
+      setAlert("Note copied!", "alert");
+    };
+  
+  return (
+    <div>
+      <h1>Results</h1>
+      <textarea 
+                className="w-full p-3 bg-slate-800 border border-slate-700 rounded-md text-slate-100 min-h-[200px]"
+                value={response ?? ""} 
+                readOnly // Since it's a generator output, usually you want readOnly or a change handler
+                placeholder="MDM note will appear here..."
+            />
+      
+          <button
+            onClick={copyToClipboard}
+            className={cn("baseStyles", "primaryBtn")}
+          >
+            Copy
+          </button>
+      <div>{response ? `Time to generate response: ${time} seconds.` : null}</div>
+    </div>
+  );
+};
+
+export default ResultsDep;

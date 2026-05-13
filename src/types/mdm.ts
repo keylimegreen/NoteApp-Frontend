@@ -36,23 +36,17 @@ export type Pmh = (typeof PMH)[number];
 
 // Navigation
 export const NAVIGATION_HEADERS = [
-  "MDM",
-  "Discharge",
-  "Procedure",
-  "Transfer",
-  "Calculator",
-  "Login",
+  "mdm",
+  "results",
+  "discharge",
+  "procedure",
+  "transfer",
+  "etc",
+  "login",
+  "logout"
 ] as const;
 export type NavigationHeaders = (typeof NAVIGATION_HEADERS)[number];
 
-export type View =
-  | "Login"
-  | "MDM"
-  | "Result"
-  | "Calculator"
-  | "Procedure"
-  | "Transfer"
-  | "Discharge";
 
 export const DISPOSITION = [
   "Adm",

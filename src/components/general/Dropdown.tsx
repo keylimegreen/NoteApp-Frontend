@@ -16,17 +16,17 @@ export const DropdownSelector = ({
 }: DropdownSelectorProps) => {
   const options = MDM_PARTS[collectionName];
   const currentValue = useNoteStore((state) => {
-    const activePatient = state.patients[state.activePatientId];
+    const activePatient = state.returnActivePatient();
     return activePatient ? activePatient[collectionName] : "";
   });
 
   const isPredefined = options.includes(currentValue as All_mdm_type);
   return (
-    <div className="grid grid-col-2 w-full max-w-xs">
+    <div className="flex w-full max-w-xs">
       <select
         value={isPredefined ? currentValue : "Other"}
         onChange={(e) => {
-            console.log(e.target.value)
+            
             onSelect( e.target.value)
             }}
         className="block w-full px-3 py-2 bg-white border border-slate-300 text-slate-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

@@ -1,23 +1,21 @@
 import React from "react";
-import useUIStore from "../../store/useUIStore";
-import type { View } from "../../types/mdm";
+import type { NavigationHeaders } from "../../types/mdm";
 import cn from "../../lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface NavButtonProps {
-  targetView: View
+  targetView: NavigationHeaders
   label: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primaryBtn' | 'secondary';
 }
 
-export const NavButton: React.FC<NavButtonProps> = ({ targetView, label, variant = 'primary' }) => {
-  const setActiveView = useUIStore((state) => state.setActiveView);
-
-  
+export const NavButton: React.FC<NavButtonProps> = ({ targetView, label, variant = 'primaryBtn' }) => {
+  const navigate = useNavigate()
 
   return (
     <button
-      onClick={() => setActiveView(targetView)}
-      className={cn("baseStyles" ,"primaryBtn")}
+      onClick={() => navigate(`/${targetView}`)}
+      className={cn("baseStyles" ,variant)}
     >
       {label}
     </button>

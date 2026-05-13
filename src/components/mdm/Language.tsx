@@ -9,7 +9,7 @@ const LanguageComponent: React.FC = () => {
       <h3 className={cn("text-header", "header-border-r")}>
         Language
       </h3>
-      <div className="grid grid-cols-3 gap-2 pl-2">
+      <div className="grid grid-cols-1 gap-2 pl-2">
         <DropdownSelector collectionName={"language"} onSelect={ onClickFn} />
       </div>
     </div>

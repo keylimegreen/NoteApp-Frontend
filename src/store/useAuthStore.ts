@@ -3,15 +3,13 @@ import { CONFIG } from "../config/config";
 
 interface AuthState {
   user: string | null;
-  token: string | null;
   isAuthenticated: boolean;
-  login: (user: string, pw: string) => Promise<void>;
-  logout: () => void
+  login: (user: string, pw: string) => Promise<boolean>;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  token: null,
   isAuthenticated: false,
 
   login: async (user, pw) => {
@@ -19,36 +17,53 @@ export const useAuthStore = create<AuthState>((set) => ({
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
 
     try {
-      const response = await fetch(`${CONFIG.BASE_URL}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`${CONFIG.BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user, pw }),
+        signal: controller.signal,
+        credentials: "include"
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) throw new Error("Auth failed");
+
+      // Save to store and potentially localStorage for persistence
+      set({
+        user: user,
+        isAuthenticated: true,
+      });
+      return true;
+    } catch {
+      set({ isAuthenticated: false });
+      return false;
+    }
+  },
+
+  logout: async () => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         signal: controller.signal,
       });
 
       clearTimeout(timeoutId);
 
-      if (!response.ok) throw new Error('Auth failed');
-
-      const data = await response.json();
+      if (!response.ok) throw new Error("Log out failed");
 
       // Save to store and potentially localStorage for persistence
-      set({ 
-        user: data.username, 
-        token: data.token, 
-        isAuthenticated: true 
+      set({
+        user: null,
+        isAuthenticated: false,
       });
-      
-      localStorage.setItem('token', data.token);
-
-    } catch (error) {
-      set({ isAuthenticated: false });
-      throw error; // Re-throw so the component can show an error message
+      return true;
+    } catch {
+      return false;
     }
   },
-
-  logout: () => {
-    localStorage.removeItem('token');
-    set({ user: null, token: null, isAuthenticated: false });
-  }
 }));

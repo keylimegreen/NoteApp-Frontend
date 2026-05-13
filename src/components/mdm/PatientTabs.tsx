@@ -2,8 +2,12 @@ import cn from "../../lib/utils";
 import useNoteStore from "../../store/useNoteStore";
 
 const PatientTabs = () => {
-  const { patients, activePatientId, setActivePatient, setName } = useNoteStore();
+  const activePatientId = useNoteStore((s) => s.activePatientId);
+  const setActivePatient = useNoteStore((s) => s.setActivePatient);
+  const setName = useNoteStore((s) => s.setName);
+  const patients = useNoteStore((s) => s.patients);
   const slots = Object.keys(patients).map((id) => parseInt(id));
+
   return (
     <div className="flex gap-1 mb-4">
       {slots.map((id) => (
@@ -11,17 +15,27 @@ const PatientTabs = () => {
           key={id}
           onClick={() => setActivePatient(id)}
           className={cn(
-            "px-3 py-1 text-[10px] rounded border",
+            " px-3 py-1 text-[10px] rounded border",
             activePatientId === id
               ? "bg-blue-600 border-blue-400"
               : "bg-slate-900 border-slate-800",
           )}
         >
-          <span>{id}. </span>
-          <input key={id}
-          value={patients[id].name}
-          placeholder="patient"
-          onChange={(e) => setName(e.target.value)}></input>
+          <div className="grid g-col-2">
+            {patients[id].isGenerating ? (
+              <div className="px-5">
+                <div className="spinner"></div>
+              </div>
+            ) : (
+              <div>{id}. </div>
+            )}
+            <input
+              key={id}
+              value={patients[id].name}
+              placeholder="patient"
+              onChange={(e) => setName(e.target.value)}
+            ></input>
+          </div>
         </button>
       ))}
     </div>

@@ -1,20 +1,37 @@
 import React, { useState } from "react";
 import useUIStore from "../../store/useUIStore";
-import { CONFIG } from "../../config/config";
+import { useAuthStore } from "../../store/useAuthStore";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const shifts = [1, 8, 12];
-
-export const LoginComponent = () => {
-  const isLoading = useState((s) => s.isLoading);
-  const [password, setPassword] = useState('');
+export const LoginViewer = () => {
+  const handleLogin = useAuthStore((s) => s.login);
   const [isLoading, setIsLoading] = useState(false);
-  const error = useUIStore((s) => s.error);
-  const setError = useUIStore((s) => s.setError);
+  const alertMsg = useUIStore((s) => s.alertMsg);
+  const setAlert = useUIStore((s) => s.setAlert);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-
+    const data = new FormData(e.currentTarget);
+    const user = data.get("user") as string;
+    const pw = data.get("pw") as string;
+    if (!user || !pw) {
+      setAlert("User and password cannot be empty","error");
+    } else {
+      setIsLoading(true);
+      const response = await handleLogin(user, pw);
+      setIsLoading(false);
+      console.log("logged on: ", response)
+      if (response) {
+        setAlert(null,"alert")
+        const from = location.state?.from?.pathname || "/mdm";
+        navigate(from, { replace: true });
+      } else {
+         setAlert("User and password incorrect","error");
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
@@ -33,14 +50,14 @@ export const LoginComponent = () => {
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg border border-slate-200">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">EMR Portal</h2>
+          <h2 className="text-3xl font-bold text-slate-900">App Portal</h2>
           <p className="mt-2 text-sm text-slate-600">Please sign in</p>
         </div>
 
         {/* Error Alert */}
-        {error && (
+        {alertMsg && (
           <div className="bg-red-50 border-l-4 border-red-500 p-3 text-red-700 text-sm">
-            {error}
+            {alertMsg}
           </div>
         )}
 
@@ -52,9 +69,8 @@ export const LoginComponent = () => {
               </label>
               <input
                 id="user"
+                name="user"
                 required
-                value={user}
-                onChange={(e) => setUser(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-slate-300 text-slate-500 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="username"
               />
@@ -70,34 +86,12 @@ export const LoginComponent = () => {
               <input
                 id="password"
                 type="password"
-                autocomplete="new-password"
+                name="pw"
+                autoComplete="new-password"
                 required
                 className="mt-1 block w-full px-3 py-2 text-slate-500 border border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="••••••••"
               />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="ml-2 block text-sm text-slate-700 flex items-center">
-              <h2> Shift Length </h2>
-              {shifts.map((s) => {
-                return (
-                  <div>
-                    <input
-                      id={`shift-${s}`}
-                      type="checkbox"
-                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
-                    />
-                    <label
-                      htmlFor={`shift-${s}`}
-                      className="ml-2 block text-sm text-slate-700"
-                    >
-                      {s}hr
-                    </label>
-                  </div>
-                );
-              })}
             </div>
           </div>
 
@@ -137,4 +131,4 @@ export const LoginComponent = () => {
       </div>
     </div>
   );
-};}
+};

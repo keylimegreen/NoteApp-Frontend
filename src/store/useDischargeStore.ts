@@ -7,6 +7,9 @@ interface DischargeState {
   Abnormal_Labs: boolean;
   Abnormal_Imaging: boolean;
   Custom: boolean;
+  response: string|null;
+  responseTime: number|null;
+  pending: boolean;
   // Actions (Functions to update the data)
   removeDischargeSearch: (discharge: string) => void;
   addDischargeSearch: (discharge: string) => void;
@@ -14,7 +17,9 @@ interface DischargeState {
   setAbnormalLab: (flag: boolean) => void;
   setAbnormalImaging: (flag: boolean) => void;
   setCustom: (flag: boolean) => void;
+  setResponse: (response: string, responseTime: number ) => void;
   toggleDischargeState: (target: Discharge_addons_type) => void;
+  setPending: (pending: boolean) => void;
 }
 
 export const useDischargeStore = create<DischargeState>((set) => ({
@@ -22,7 +27,9 @@ export const useDischargeStore = create<DischargeState>((set) => ({
   Abnormal_Labs: false,
   Abnormal_Imaging: false,
   Custom: false,
-
+  response: null,
+  responseTime: null,
+  pending: false,
   // Corrected: Uses filter to return a new array without the target term
   removeDischargeSearch: (discharge) =>
     set((state) => ({
@@ -45,7 +52,7 @@ export const useDischargeStore = create<DischargeState>((set) => ({
 
   toggleDischargeState: (target) =>
     set((state) => ({ [target]: !state[target] })),
-
+  setResponse: (response, responseTime, pending = false) => set({response,responseTime,pending}),
   // Optional: Clear all search terms
   clearDischargeSearch: () =>
     set({
@@ -54,6 +61,8 @@ export const useDischargeStore = create<DischargeState>((set) => ({
       Abnormal_Imaging: false,
       Custom: false,
     }),
+
+  setPending: (pending: boolean) => set({pending}),
 }));
 
 export default useDischargeStore;

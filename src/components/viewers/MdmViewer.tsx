@@ -49,7 +49,7 @@ const MdmViewer: React.FC = () => {
         <PatientTabs />
         <div className="flex px-10">
         <SubmitButton />
-        <NavButton targetView="Result" label="See results" />
+        <NavButton targetView="results" label="See results" />
         </div>
       </div>
       <PopupModal />

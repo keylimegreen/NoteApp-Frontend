@@ -7,7 +7,8 @@ const ViewResult:React.FC = () => {
     return (
         <div>
             <Results/>
-            <PatientTabs/><NavButton targetView="MDM" label="Return to template"/>
+            <PatientTabs/>
+            <NavButton targetView="mdm" label="Return to template"/>
         </div>
     )
 }

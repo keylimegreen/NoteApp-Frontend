@@ -89,7 +89,9 @@ export interface PatientData {
   criticalCare: boolean[];
 
   isGenerating: boolean;
-  response: string;
+  hpi_pe: string;
+  mdm: string;
+  responseTime: number | null; //time in milliseconds
 }
 
 export const TOGGLERABLE_DATA = [
@@ -158,8 +160,12 @@ interface NoteState {
   setCustomProcedure: (text: string) => void;
   setCustomConsult: (text: string) => void;*/
 
-  setResponse: (activePatient: number, response: string) => void;
+  setHpiPe: (activePatient: number, hpi_pe: string,time:number) => void;
+  setMdm: (activePatient: number, mdm: string,time:number) => void;
   resetForm: () => void;
+  setIsGenerating: (activePatient: number, isGenerating: boolean) => void;
+  updatePatientSection: (activePatient:number, section:string, token:string) => void;
+  setResponseTime: (activePatient:number, duration:number) => void;
 }
 
 const createInitialRos = () => {
@@ -221,7 +227,9 @@ const initialPatient = {
   customConsult: null,
 
   isGenerating: false,
-  response: "",
+  hpi_pe: "",
+  mdm: "",
+  responseTime: null,
 };
 
 const initialPatients = Array.from({ length: CONFIG.NUM_PATIENTS }).reduce(
@@ -308,7 +316,7 @@ export const useNoteStore = create<NoteState>((set, get) => ({
         ...state.patients,
         [state.activePatientId]: {
           ...state.patients[state.activePatientId],
-          lang,
+          language:lang,
         },
       },
     }));
@@ -540,18 +548,68 @@ export const useNoteStore = create<NoteState>((set, get) => ({
       };
     }),
 
-  setMdmResponse: (activePatient: number, response: string) => {
+  setHpiPe: (activePatient: number, hpi_pe: string, time: number) => {
     set((state) => ({
       patients: {
         ...state.patients,
         [activePatient]: {
           ...state.patients[activePatient],
-          response: response,
+          hpi_pe: hpi_pe,
+          responseTime:time
+        },
+      },
+    }));
+  },
+
+  setMdm: (activePatient: number, mdm: string, time: number) => {
+    set((state) => ({
+      patients: {
+        ...state.patients,
+        [activePatient]: {
+          ...state.patients[activePatient],
+          mdm: mdm,
+          responseTime:time
+        },
+      },
+    }));
+  },
+
+  setIsGenerating: (activePatient: number, isGenerating: boolean) => {
+    set((state) => ({
+      patients: {
+        ...state.patients,
+        [activePatient]: {
+          ...state.patients[activePatient],
+          isGenerating: isGenerating
+        },
+      },
+    }));
+  },
+
+  updatePatientSection: (activePatient, section, token) => set((state) => ({
+    patients: {
+      ...state.patients,
+      [activePatient]: {
+        ...state.patients[activePatient],
+        [section]: (state.patients[activePatient][section] || "") + token
+      },
+    },
+  })),
+  setResponseTime: (activePatient: number, responseTime: number) => {
+    set((state) => ({
+      patients: {
+        ...state.patients,
+        [activePatient]: {
+          ...state.patients[activePatient],
+          responseTime: responseTime
         },
       },
     }));
   },
 }));
+
+
+
 /*setCustomXray: (customXray:string|null) => set({customXray}),
   setCustomCt: (customCt:string|null) => set({customCt}),
   setCustomMri: (customMri:string|null) => set({customMri}),
